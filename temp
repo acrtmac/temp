@@ -1,0 +1,30 @@
+
+#include "Adafruit_DHT_Particle.h"
+#define DHTPIN D7 
+#define DHTTYPE DHT11		
+
+DHT dht(DHTPIN, DHTTYPE);
+int loopCount;
+
+void setup() 
+{
+	Serial.begin(9600); 
+	Serial.println("DHTxx test!");
+	Particle.publish("state", "DHTxx test start");
+    dht.begin();
+	loopCount = 0;
+	delay(2000);
+}
+
+void loop() 
+{
+	float t = dht.getTempCelcius();
+	if (isnan(h) || isnan(t) || isnan(f)) 
+	{
+		Serial.println("Failed to read from DHT sensor!");
+		return;
+	}
+	Particle.publish("state", String(t), PRIVATE);
+	delay(10000);
+}
+
